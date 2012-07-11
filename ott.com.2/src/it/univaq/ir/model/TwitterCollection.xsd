@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.di.univaq.it/TwitterCollection" xmlns:tns="http://www.di.univaq.it/TwitterCollection" elementFormDefault="qualified">
+
+    <element name="tweetCollection" type="tns:TweetCollection"></element>
+
+    <complexType name="TweetCollection">
+    	<sequence>
+    		<element name="tweet" type="tns:Tweet"
+    			maxOccurs="unbounded" minOccurs="0">
+    		</element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="Tweet">
+    	<sequence>
+    		<element name="author" type="string" maxOccurs="1" minOccurs="1"></element>
+    		<element name="text" type="string" maxOccurs="1" minOccurs="1"></element>
+    	</sequence>
+    	<attribute name="id" type="long" use="required"></attribute>
+    	<attribute name="date" type="dateTime" use="required"></attribute>
+    </complexType>
+</schema>
