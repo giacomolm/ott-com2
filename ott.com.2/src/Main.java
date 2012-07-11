@@ -4,6 +4,7 @@ import java.util.Set;
 
 import net.sf.javailp.Solver;
 import net.sf.javailp.SolverFactory;
+import net.sf.javailp.SolverFactoryCPLEX;
 import net.sf.javailp.SolverFactoryGLPK;
 import it.univaq.ir.TweetIndex;
 import it.univaq.ir.TweetIndexImpl;
@@ -11,6 +12,7 @@ import it.univaq.ir.data.TweetCollectionPersister;
 import it.univaq.ir.data.TweetCollectionPersisterImpl;
 import it.univaq.ir.model.Tweet;
 import it.univaq.ir.model.TweetCollection;
+import it.univaq.lp.CPLEXCoveringSolver;
 import it.univaq.lp.CoveringSolver;
 import it.univaq.lp.ILPCoveringSolver;
 
@@ -55,9 +57,17 @@ public class Main {
 					ti.insertTweet(t);
 				}
 
-				SolverFactory factory = new SolverFactoryGLPK();
+				/*SolverFactory factory = new SolverFactoryGLPK();
 				factory.setParameter(Solver.VERBOSE, 3);
 				CoveringSolver mvcs = new ILPCoveringSolver(factory.get());
+				Set<String> solution = new HashSet<String>();
+				double val = mvcs.solve(ti.getDictionary(), ti.getTweetTerms(),
+						solution);
+				System.out.println(val + " " + solution);*/
+				
+				SolverFactory factory = new SolverFactoryCPLEX();
+				factory.setParameter(Solver.VERBOSE, 3);
+				CoveringSolver mvcs = new CPLEXCoveringSolver(factory.get());
 				Set<String> solution = new HashSet<String>();
 				double val = mvcs.solve(ti.getDictionary(), ti.getTweetTerms(),
 						solution);
