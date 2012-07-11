@@ -1,29 +1,98 @@
-To make your Eclipse integrated development environment aware of the Java API of CPLEX, follow these steps.
 
-    Create a new Java project, like this:
-    File > New ... > Java Project
-    To include the CPLEX JAR in your project, locate the libraries among the properties of the new project, like this:
-    Project > Properties > Java Build Path > Libraries
-    Click the button Add External JARs.
-    Select the file named cplex.jar.
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US"><head><title>Setting up Eclipse for the Java API of CPLEX</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><link rel="stylesheet" type="text/css" href="doc.css"/><script type="text/javascript" src="PLUGINS_ROOT/org.eclipse.help/livehelp.js"> </script>
+<script language="JavaScript" src="../../../../../../../scriptsfiles/icscript.js"> </script>
 
-Tip
-Be sure to point to the CPLEX JAR, cplex.jar, not simply the directory containing that file. Conventionally, the CPLEX JAR is in the lib directory of your CPLEX home, part of the installation of IBM® ILOG CPLEX Optimization Studio.
-After that procedure, you can create and compile your source code making use of the Java API of CPLEX.
-Before you can run your compiled code, you must create an appropriate run configuration in Eclipse or modify an existing run configuration appropriately. To do so, follow these steps.
 
-    Create a new run configuration or locate an existing run configuration to modify, like this:
-    Run > Run Configurations ... > Java Application
-    When the dialog appears, go to the Main tab, and select your main class; that is, select the class containing the main() function that you want to run.
-    Go to the Arguments tab, select VM arguments, and add the path to the CPLEX library. The CPLEX library is conventionally a DLL file on Windows or a .so file on UNIX or GNU/Linux, with an indication of the version number in its name, like cplexXX.dll or cplexXX.so where XX represents a version number of the product.
-    Tip
-    Add the path to the directory or folder containing the CPLEX library (not the name of the file itself).
-    For example, on UNIX or GNU/Linux , if the file libcplexXX.so is located in the directory COSinstallation/cplex/bin/myPlatform/myLibFormat then add a path similar to this example:
-    -Djava.library.path= COSinstallation/cplex/myPlatform/myLibFormat
-    Similarly, on Windows, if the file cplexXX.dll is located in the folder COSinstallation\cplex\myPlatform\myLibFormat then add a path similar to this example:
-    -Djava.library.path=COSinstallation/cplex/myPlatform/myLibFormat
-    If your edition of CPLEX requires a license (for example, CPLEX as part of the IBM® Academic Initiative), verify that the environment variable ILOG_LICENSE_FILE is set correctly to the location of your license file for IBM® ILOG CPLEX Optimization Studio. If not, then locate the license file on your system. Next, set that environment variable in Eclipse by going to the Environment tab and adding a variable with the full path to the license file.
-    Tip
-    The name of the license file is conventionally access.ilm.
+<script type="text/javascript" src="../../../../../../../advanced/synchWithToc.js"> </script>
 
-After these steps, you can run your Java application using CPLEX as you run other applications from Eclipse.
+<link rel="stylesheet" href="../content/PLUGINS_ROOT/org.eclipse.help.webapp/advanced/breadcrumbs.css" charset="ISO-8859-1" type="text/css"></link>
+<script type="text/javascript" src="../content/PLUGINS_ROOT/org.eclipse.help/livehelp.js"> </script>
+<script type="text/javascript">if( self == top ){ window.location.replace( "../../../../../../../index.jsp?topic=%2Filog.odms.cplex.help%2FContent%2FOptimization%2FDocumentation%2FCPLEX%2F_pubskel%2FCPLEX19.html");}</script>
+<script type="text/javascript">
+<!--
+if (parent.ContentToolbarFrame && parent.ContentToolbarFrame.setButtonState) parent.ContentToolbarFrame.setButtonState("toggle_highlight","hidden");
+-->
+</script>
+
+</head><body>
+<div class="help_breadcrumbs"><a href="../../../../../../../topic/ilog.odms.cplex.help/Content/Optimization/Documentation/CPLEX/_pubskel/CPLEX.html">CPLEX</a> > <a href="../../../../../../../topic/ilog.odms.cplex.help/Content/Optimization/Documentation/CPLEX/_pubskel/CPLEX3.html">Getting Started with CPLEX</a> > <a href="../../../../../../../topic/ilog.odms.cplex.help/Content/Optimization/Documentation/CPLEX/_pubskel/CPLEX16.html">Setting up CPLEX</a></div>
+<div class="GettingStarted"><div class="header"><div class="content"><h1 class="heading">Setting up Eclipse for the Java API of CPLEX</h1></div></div><div class="content">
+
+
+
+
+<div class="descriptiveTopicContent">
+<div class="orderedlist"><div class="orderedlistIntro">
+<div class="para">To make your Eclipse integrated development environment
+aware of the Java API of CPLEX, follow these steps.</div>
+</div><ol class="orderedlist"><li class="orderedlistItem"><div class="para">Create a new Java project, like this:</div>
+<div class="para"><span class="guicommand">File &gt; New ... &gt; Java Project</span></div>
+</li><li class="orderedlistItem"><div class="para">To include the CPLEX JAR in your project,
+locate the libraries among the properties of the new project, like
+this:</div><div class="para"><span class="guicommand">Project &gt; Properties &gt;
+Java Build Path &gt; Libraries</span></div>
+</li><li class="orderedlistItem"><div class="para">Click the button <span class="guicommand">Add
+External JARs</span>.</div></li><li class="orderedlistItem"><div class="para">Select the file named <span class="filename">cplex.jar</span>.</div>
+</li></ol></div>
+<div class="tip"><div class="tipLabel">Tip</div>
+<div class="para">Be sure to point to the CPLEX JAR, <span class="filename">cplex.jar</span>,
+not simply the directory containing that file. Conventionally, the
+CPLEX JAR is in the <span class="filename">lib</span> directory
+of your CPLEX home, part of the installation of <span class="trademark">IBM®
+            </span> ILOG CPLEX Optimization
+Studio.</div>
+</div>
+<div class="para">After that procedure, you can create and compile your
+source code making use of the Java API of CPLEX. </div>
+<div class="orderedlist"><div class="orderedlistIntro">
+<div class="para">Before you can run your compiled code, you must create
+an appropriate <span class="bold">run configuration</span> in
+Eclipse or modify an existing <span class="bold">run configuration</span> appropriately.
+To do so, follow these steps.</div>
+</div><ol class="orderedlist"><li class="orderedlistItem"><div class="para">Create a new run configuration or locate
+an existing run configuration to modify, like this:</div>
+<div class="para"><span class="bold">Run &gt; Run Configurations ... &gt;
+Java Application</span></div>
+</li><li class="orderedlistItem"><div class="para">When the dialog appears, go to the <span class="guicommand">Main</span> tab,
+and select your <code class="code">main</code> class; that is, select
+the class containing the <code class="code">main()</code> function
+that you want to run.</div></li><li class="orderedlistItem"><div class="para">Go to the <span class="guicommand">Arguments</span> tab,
+select <span class="guicommand">VM arguments</span>, and add
+the path to the CPLEX library. The CPLEX library is conventionally
+a DLL file on Windows or a .so file on UNIX or GNU/Linux, with an
+indication of the version number in its name, like <span class="filename">cplexXX.dll</span> or <span class="filename">cplexXX.so</span> where
+XX represents a version number of the product.</div>
+<div class="tip"><div class="tipLabel">Tip</div>
+<div class="para">Add the path to the directory or folder containing the
+CPLEX library (<span class="bold">not</span> the name of
+the file itself). </div>
+</div>
+<div class="para">For example, on UNIX or GNU/Linux , if the file <span class="filename">libcplexXX.so</span> is
+located in the directory <span class="filename">COSinstallation/cplex/bin/myPlatform/myLibFormat</span> then
+add a path similar to this example:</div>
+<div class="para">       <code class="code">-Djava.library.path= COSinstallation/cplex/myPlatform/myLibFormat</code> 
+  </div>
+<div class="para">Similarly, on Windows, if the file <span class="filename">cplexXX.dll</span> is
+located in the folder <span class="filename">COSinstallation\cplex\myPlatform\myLibFormat</span> then
+add a path similar to this example:</div>
+<div class="para">       <code class="code">-Djava.library.path=COSinstallation/cplex/myPlatform/myLibFormat</code> 
+    </div>
+</li><li class="orderedlistItem"><div class="para">If your edition of CPLEX requires a
+license (for example, CPLEX as part of the <span class="trademark">IBM®
+            </span> Academic Initiative), verify
+that the environment variable <code class="code">ILOG_LICENSE_FILE</code> is
+set correctly to the location of your license file for <span class="trademark">IBM®
+            </span> ILOG CPLEX Optimization
+Studio. If not, then locate the license file on your system. Next,
+set that environment variable in Eclipse by going to the <span class="guicommand">Environment</span> tab
+and adding a variable with the full path to the license file.</div>
+<div class="tip"><div class="tipLabel">Tip</div>
+<div class="para">The name of the license file is conventionally <span class="filename">access.ilm</span>.</div>
+</div>
+</li></ol></div>
+<div class="para">After these steps, you can run your Java application
+using CPLEX as you run other applications from Eclipse.</div>
+</div>
+<div class="eclipseRelatedLinks"><div class="eclipseRelatedLinksLabel">Current section</div><ul class="eclipseRelatedLinks"><li><a href="CPLEX16.html" class="bluelink">Setting up CPLEX</a></li></ul></div></div><div class="footer"><div class="content"><div class="navigation"><a href="CPLEX18.html" class="navigation"><span class="previous">PREVIOUS</span></a><span class="separator">&#160;&#160;</span><a href="CPLEX20.html" class="navigation"><span class="next">NEXT</span></a></div><div class="copyright">&#169; Copyright IBM Corp. 1987, 2010. <a href="CPLEX2.html" class="navigation"><span class="legalterms">Legal Terms</span></a></div></div></div></div></body></html>
