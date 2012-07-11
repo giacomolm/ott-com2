@@ -1,0 +1,29 @@
+To make your Eclipse integrated development environment aware of the Java API of CPLEX, follow these steps.
+
+    Create a new Java project, like this:
+    File > New ... > Java Project
+    To include the CPLEX JAR in your project, locate the libraries among the properties of the new project, like this:
+    Project > Properties > Java Build Path > Libraries
+    Click the button Add External JARs.
+    Select the file named cplex.jar.
+
+Tip
+Be sure to point to the CPLEX JAR, cplex.jar, not simply the directory containing that file. Conventionally, the CPLEX JAR is in the lib directory of your CPLEX home, part of the installation of IBM® ILOG CPLEX Optimization Studio.
+After that procedure, you can create and compile your source code making use of the Java API of CPLEX.
+Before you can run your compiled code, you must create an appropriate run configuration in Eclipse or modify an existing run configuration appropriately. To do so, follow these steps.
+
+    Create a new run configuration or locate an existing run configuration to modify, like this:
+    Run > Run Configurations ... > Java Application
+    When the dialog appears, go to the Main tab, and select your main class; that is, select the class containing the main() function that you want to run.
+    Go to the Arguments tab, select VM arguments, and add the path to the CPLEX library. The CPLEX library is conventionally a DLL file on Windows or a .so file on UNIX or GNU/Linux, with an indication of the version number in its name, like cplexXX.dll or cplexXX.so where XX represents a version number of the product.
+    Tip
+    Add the path to the directory or folder containing the CPLEX library (not the name of the file itself).
+    For example, on UNIX or GNU/Linux , if the file libcplexXX.so is located in the directory COSinstallation/cplex/bin/myPlatform/myLibFormat then add a path similar to this example:
+    -Djava.library.path= COSinstallation/cplex/myPlatform/myLibFormat
+    Similarly, on Windows, if the file cplexXX.dll is located in the folder COSinstallation\cplex\myPlatform\myLibFormat then add a path similar to this example:
+    -Djava.library.path=COSinstallation/cplex/myPlatform/myLibFormat
+    If your edition of CPLEX requires a license (for example, CPLEX as part of the IBM® Academic Initiative), verify that the environment variable ILOG_LICENSE_FILE is set correctly to the location of your license file for IBM® ILOG CPLEX Optimization Studio. If not, then locate the license file on your system. Next, set that environment variable in Eclipse by going to the Environment tab and adding a variable with the full path to the license file.
+    Tip
+    The name of the license file is conventionally access.ilm.
+
+After these steps, you can run your Java application using CPLEX as you run other applications from Eclipse.
