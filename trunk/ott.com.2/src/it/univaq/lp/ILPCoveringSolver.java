@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import net.sf.javailp.Constraint;
 import net.sf.javailp.Linear;
 import net.sf.javailp.OptType;
 import net.sf.javailp.Problem;
