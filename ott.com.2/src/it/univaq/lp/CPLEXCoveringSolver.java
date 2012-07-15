@@ -1,11 +1,8 @@
 package it.univaq.lp;
 
 import ilog.concert.IloException;
-import ilog.concert.IloIntSetVar;
 import ilog.concert.IloIntVar;
 import ilog.concert.IloLinearNumExpr;
-import ilog.concert.IloObjective;
-import ilog.concert.IloRange;
 import ilog.cplex.IloCplex;
 
 import java.util.Collection;
@@ -14,16 +11,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import net.sf.javailp.Linear;
-import net.sf.javailp.Solver;
-
 public class CPLEXCoveringSolver implements CoveringSolver {
-
-	private Solver solver;
-	
-	public CPLEXCoveringSolver(Solver solver) {
-		this.solver = solver;
-	}
 	
 	@Override
 	public <E> double solve(Set<E> universe, Collection<Set<E>> subsets,
