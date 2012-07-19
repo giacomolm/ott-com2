@@ -27,73 +27,80 @@ public class TweetIndexImpl implements TweetIndex {
 	private Map<String, Frequency> frequencies;
 	private Collection<String> stopwords;
 	private Collection<String> excludewords;
-	
+
 	public TweetIndexImpl() throws IOException {
 		this(null);
 	}
-	
+
 	public TweetIndexImpl(String exclude) throws IOException {
 
 		index = new HashMap<Long, Collection<String>>();
 		frequencies = new HashMap<String, Frequency>();
-		
-		//load stopwords
+
+		// load stopwords
 		stopwords = new ArrayList<String>();
-		InputStream in = 
-				   getClass().getResourceAsStream("/it/univaq/ir/util/en-stopword-list.txt");
+		InputStream in = getClass().getResourceAsStream(
+				"/it/univaq/ir/util/en-stopword-list.txt");
 		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 		String line = null;
-		while ((line = reader.readLine()) != null) stopwords.add(line);
-		
+		while ((line = reader.readLine()) != null)
+			stopwords.add(line);
+
 		excludewords = new ArrayList<String>();
-		if (exclude != null && !exclude.isEmpty()) {			
+		if (exclude != null && !exclude.isEmpty()) {
 			Collection<String> tokens = SimpleTokenizer.tokenize(exclude);
 			for (String token : tokens) {
-				token = token.toLowerCase(); //lower case (to match against stopword)
+				token = token.toLowerCase(); // lower case (to match against
+												// stopword)
 				String term = WrappedStemmer.stem(token);
 				excludewords.add(term);
-			}			
+			}
 		}
 	}
-	
+
 	@Override
 	public void insertTweet(Tweet t) {
 		long id = t.getId();
 		Collection<String> tweetTerms = new ArrayList<String>();
 		index.put(id, tweetTerms);
-		
-		//ANALYZE
-		String text = t.getText();		
+
+		// ANALYZE
+		String text = t.getText();
 		Collection<String> tokens = SimpleTokenizer.tokenize(text);
 		for (String token : tokens) {
-			token = token.toLowerCase(); //lower case (to match against stopword)
+			token = token.toLowerCase(); // lower case (to match against
+											// stopword)
 			if (stopwords.contains(token))
-				System.err.println("Stopword detected: "+token);
+				System.err.println("Stopword detected: " + token);
 			else if (excludewords.contains(token))
-				System.err.println("Excluded word detected: "+token);			
-			else if (token.startsWith("#")) //it's not an hashtag
-				System.err.println("Hashtag detected: "+token);
-			else if (token.startsWith("@")) //it's not a mention				
-				System.err.println("Mention detected: "+token);
-			else if (token.matches("https?://\\S+")) //it's not an url (TODO: improve this!) 
-				System.err.println("Url detected: "+token);			
-			else { 
+				System.err.println("Excluded word detected: " + token);
+			else if (token.startsWith("#")) // it's not an hashtag
+				System.err.println("Hashtag detected: " + token);
+			else if (token.startsWith("@")) // it's not a mention
+				System.err.println("Mention detected: " + token);
+			else if (token.matches("https?://\\S+")) // it's not an url (TODO:
+														// improve this!)
+				System.err.println("Url detected: " + token);
+			else {
 				String term = WrappedStemmer.stem(token);
-				if (tweetTerms.contains(term)) {
-					frequencies.get(term).termFrequency++;
+				if (term.length() <= 2) {
+					System.err.println("Term shorter than 3 chars detected: " + token);					
 				} else {
-					if (!frequencies.containsKey(term)) {
-						Frequency freq = new Frequency();
-						frequencies.put(term, freq);
+					if (tweetTerms.contains(term)) {
+						frequencies.get(term).termFrequency++;
+					} else {
+						if (!frequencies.containsKey(term)) {
+							Frequency freq = new Frequency();
+							frequencies.put(term, freq);
+						}
+						frequencies.get(term).documentFrequency++;
+						frequencies.get(term).termFrequency++;
 					}
-					frequencies.get(term).documentFrequency++;
-					frequencies.get(term).termFrequency++;
+					tweetTerms.add(term);
 				}
-				tweetTerms.add(term);
 			}
 		}
-		
-		
+
 	}
 
 	@Override
@@ -114,7 +121,9 @@ public class TweetIndexImpl implements TweetIndex {
 	@Override
 	public int getTermFrequency(long tweetId, String term) {
 		int cnt = 0;
-		for (String t : index.get(tweetId)) if (t.equalsIgnoreCase(term)) cnt++;
+		for (String t : index.get(tweetId))
+			if (t.equalsIgnoreCase(term))
+				cnt++;
 		return cnt;
 	}
 
