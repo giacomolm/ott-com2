@@ -12,7 +12,7 @@ import it.univaq.ir.model.TweetCollection;
 import it.univaq.lp.CPLEXCoveringSolver;
 import it.univaq.lp.CoveringSolver;
 
-public class Main {
+public class MainCPLEX {
 
 	/**
 	 * @param args
