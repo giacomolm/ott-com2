@@ -184,14 +184,7 @@ public class TweetIndexImpl implements TweetIndex {
 			/*Twitter twitter = new TwitterFactory().getInstance();
 			try {
 				System.out.println(twitter.showStatus(t.getId()).isRetweet());
-			} catch (TwitterException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				System.out.println(t.getId()+" nonet");
-			}
 			*/
-			
-			
 			//Verifichiamo qual'è l'indice con frequenza minore
 			//questa sarà la candidata per lasciare il posto al nuovo tweet con costo maggiore
 			int min = 0;
@@ -205,6 +198,15 @@ public class TweetIndexImpl implements TweetIndex {
 				max[min] = temp;
 				tweets.put(min,t);
 			}
+				
+			/*	
+			} catch (TwitterException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				System.out.println(t.getId()+" nonet");
+			}
+			*/
+			
 		}
 		return tweets;
 	}
