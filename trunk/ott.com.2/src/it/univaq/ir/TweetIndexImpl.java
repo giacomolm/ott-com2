@@ -11,11 +11,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
 
 import twitter4j.Status;
 import twitter4j.StatusUpdate;
@@ -29,8 +32,26 @@ class Frequency {
 	public int documentFrequency = 0;
 }
 
+class MVTComparator implements Comparator<Long> {
+
+	private Map<Long, Integer> map;
+	
+	public MVTComparator(Map<Long, Integer> m) {
+		map = m;
+	}
+	
+	@Override
+	public int compare(Long o1, Long o2) {
+		int o1i = map.get(o1);
+		int o2i = map.get(o2);
+		return (o1i < o2i) ? -1 : (o1i > o2i) ? 1 : 0;
+	}
+	
+}
+
 public class TweetIndexImpl implements TweetIndex {
 
+	private Map<Long, Tweet> docIndex;
 	private Map<Long, Collection<String>> index;
 	private Map<String, Frequency> frequencies;
 	private Collection<String> stopwords;
@@ -43,6 +64,7 @@ public class TweetIndexImpl implements TweetIndex {
 	public TweetIndexImpl(String exclude) throws IOException {
 
 		index = new HashMap<Long, Collection<String>>();
+		docIndex = new HashMap<Long, Tweet>();
 		frequencies = new HashMap<String, Frequency>();
 
 		// load stopwords
@@ -69,6 +91,7 @@ public class TweetIndexImpl implements TweetIndex {
 	@Override
 	public void insertTweet(Tweet t) {
 		long id = t.getId();
+		docIndex.put(id, t);
 		Collection<String> tweetTerms = new ArrayList<String>();
 		index.put(id, tweetTerms);
 
@@ -80,7 +103,7 @@ public class TweetIndexImpl implements TweetIndex {
 											// stopword)
 			if (stopwords.contains(token))
 				System.err.println("Stopword detected: " + token);
-			else if (excludewords.contains(token))
+			else if (excludewords.contains(WrappedStemmer.stem(token)))
 				System.err.println("Excluded word detected: " + token);
 			else if (token.startsWith("#")) // it's not an hashtag
 				System.err.println("Hashtag detected: " + token);
@@ -155,9 +178,7 @@ public class TweetIndexImpl implements TweetIndex {
 	}
 
 	@Override
-	public Map getMostValuableTweet(TweetCollection tc, TweetIndex ti, Set<String> solution) {
-		// TODO Auto-generated method stub
-		
+	public Map getMostValuableTweet(TweetCollection tc, TweetIndex ti, Set<String> solution) {		
 		//max è un array che contiene le frequenze delle 5 parole più frequenti nei tweet
 		int max[] = new int[5];
 		
@@ -216,5 +237,27 @@ public class TweetIndexImpl implements TweetIndex {
 		}
 		return tweets;
 	}
+	
+	public Collection<Long> getMostValuableTweets(Set<String> solution, int number) {
+		Map<Long, Integer> mvp = new HashMap<Long, Integer>();
+		MVTComparator mvtc = new MVTComparator(mvp);
+		TreeMap<Long, Integer> smvp = new TreeMap<Long, Integer>(mvtc);
+		
+		for (Entry<Long, Collection<String>> tweet : index.entrySet()) {
+			int cnt = 0;
+			for (String term : solution) if (tweet.getValue().contains(term)) cnt += this.getTermDocumentFrequency(term);
+			mvp.put(tweet.getKey(), cnt);
+		}
+		smvp.putAll(mvp);
+		ArrayList<Long> rv = new ArrayList<Long>(smvp.keySet());
+		Collections.reverse(rv);
+		return rv.subList(0, number);
+	}
+
+	@Override
+	public Tweet getTweetById(long id) {
+		return docIndex.get(id);	
+	}
 
 }
+	
