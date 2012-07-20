@@ -1,6 +1,7 @@
 package it.univaq.ir;
 
 import it.univaq.ir.model.Tweet;
+import it.univaq.ir.model.TweetCollection;
 import it.univaq.ir.util.SimpleTokenizer;
 import it.univaq.ir.util.WrappedStemmer;
 
@@ -15,6 +16,13 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
+import twitter4j.Status;
+import twitter4j.StatusUpdate;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.api.StatusMethods;
 
 class Frequency {
 	public int termFrequency = 0;
@@ -144,6 +152,61 @@ public class TweetIndexImpl implements TweetIndex {
 			terms.add(new HashSet<String>(e.getValue()));
 		}
 		return terms;
+	}
+
+	@Override
+	public Map getMostValuableTweet(TweetCollection tc, TweetIndex ti, Set<String> solution) {
+		// TODO Auto-generated method stub
+		
+		//max è un array che contiene le frequenze delle 5 parole più frequenti nei tweet
+		int max[] = new int[5];
+		
+		//per sicurezza, non ricordo se vengono inizializzati a zero
+		for(int i=0; i<max.length; i++){
+			max[i]=0;
+		}
+		//La mappa contiene i tweet che hanno costo più elevato
+		//La struttura della mappa è la seguente
+		//sinistra: indice che coincide con la posizione del tweet nell'array max
+		//destra: tweet che  
+		Map tweets= new HashMap();
+		for (Tweet t : tc.getTweet()) {
+			
+			int temp = 0;
+			//calcolo il costo relativi i termini
+			for(String str : ti.getTweetTerms(t.getId())){
+				if(solution.contains(str)){
+					temp+=ti.getTermDocumentFrequency(str);
+				}
+			}
+			
+			//Questo permette di capire se è retwittato: però fa le richieste in tempo reale
+			/*Twitter twitter = new TwitterFactory().getInstance();
+			try {
+				System.out.println(twitter.showStatus(t.getId()).isRetweet());
+			} catch (TwitterException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				System.out.println(t.getId()+" nonet");
+			}
+			*/
+			
+			
+			//Verifichiamo qual'è l'indice con frequenza minore
+			//questa sarà la candidata per lasciare il posto al nuovo tweet con costo maggiore
+			int min = 0;
+			for(int i=1; i<max.length; i++){
+				if (max[i]<max[min])
+					min = i;
+			}
+			
+			//inseriamo il tweet nella mappa, sempre se il suo costo è maggiore di uno di quelli gia presenti nella mappa
+			if(temp>max[min]){
+				max[min] = temp;
+				tweets.put(min,t);
+			}
+		}
+		return tweets;
 	}
 
 }
