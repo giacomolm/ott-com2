@@ -40,9 +40,9 @@ public class TweetCollectionPersisterImpl implements TweetCollectionPersister {
 	}
 
 	@Override
-	public TweetCollection downloadTweetCollection(String queryString,
-			int pages, int tweetPerPages) throws TweetException,
-			IllegalArgumentException {
+	public TweetCollection downloadTweetCollection(String queryString, String lang, 
+			int pages, int tweetPerPages, boolean excludeRT)
+			throws TweetException, IllegalArgumentException {
 		if (pages < 1 || pages > 15)
 			throw new IllegalArgumentException("It must be 1<=page<=15");
 		if (tweetPerPages < 1 || tweetPerPages > 100)
@@ -53,22 +53,28 @@ public class TweetCollectionPersisterImpl implements TweetCollectionPersister {
 			Twitter twitter = new TwitterFactory().getInstance();
 			tweets = new TweetCollection();
 			Query query = new Query(queryString);
+			query.lang(lang);
 			query.setRpp(tweetPerPages);
 			for (int i = 1; i <= pages; i++) {
-				System.err.println("Downloading page #"+i+" for "+queryString+" ...");
+				System.err.println("Downloading page #" + i + " for "
+						+ queryString + " ...");
 				query.setPage(i);
 				QueryResult result = twitter.search(query);
 				for (Tweet t : result.getTweets()) {
-					it.univaq.ir.model.Tweet t1 = new it.univaq.ir.model.Tweet();
-					t1.setId(t.getId());
-					t1.setAuthor(t.getFromUser());
-					t1.setText(t.getText());
-					GregorianCalendar c = new GregorianCalendar();
-					c.setTime(t.getCreatedAt());
-					XMLGregorianCalendar date = DatatypeFactory.newInstance()
-							.newXMLGregorianCalendar(c);
-					t1.setDate(date);
-					tweets.getTweet().add(t1);
+					if (excludeRT && t.getText().startsWith("RT @")) {
+						System.err.println("RT excluded, id: "+t.getId());
+					} else {
+						it.univaq.ir.model.Tweet t1 = new it.univaq.ir.model.Tweet();
+						t1.setId(t.getId());
+						t1.setAuthor(t.getFromUser());
+						t1.setText(t.getText());
+						GregorianCalendar c = new GregorianCalendar();
+						c.setTime(t.getCreatedAt());
+						XMLGregorianCalendar date = DatatypeFactory
+								.newInstance().newXMLGregorianCalendar(c);
+						t1.setDate(date);
+						tweets.getTweet().add(t1);
+					}
 				}
 			}
 		} catch (Exception ex) {
