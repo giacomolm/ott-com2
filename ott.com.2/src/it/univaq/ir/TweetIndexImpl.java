@@ -170,6 +170,10 @@ public class TweetIndexImpl implements TweetIndex {
 		//sinistra: indice che coincide con la posizione del tweet nell'array max
 		//destra: tweet che  
 		Map tweets= new HashMap();
+		
+		//Serve per prelevare lo status del tweet
+		//Twitter twitter = new TwitterFactory().getInstance();
+		
 		for (Tweet t : tc.getTweet()) {
 			
 			int temp = 0;
@@ -181,10 +185,10 @@ public class TweetIndexImpl implements TweetIndex {
 			}
 			
 			//Questo permette di capire se è retwittato: però fa le richieste in tempo reale
-			/*Twitter twitter = new TwitterFactory().getInstance();
-			try {
-				System.out.println(twitter.showStatus(t.getId()).isRetweet());
-			*/
+			/*try {
+				if(twitter.showStatus(t.getId()).isRetweet()){*/
+			
+			
 			//Verifichiamo qual'è l'indice con frequenza minore
 			//questa sarà la candidata per lasciare il posto al nuovo tweet con costo maggiore
 			int min = 0;
@@ -198,14 +202,16 @@ public class TweetIndexImpl implements TweetIndex {
 				max[min] = temp;
 				tweets.put(min,t);
 			}
-				
-			/*	
+			
+			
+				/*}
+					
 			} catch (TwitterException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				System.out.println(t.getId()+" nonet");
-			}
-			*/
+			}*/
+			
 			
 		}
 		return tweets;
