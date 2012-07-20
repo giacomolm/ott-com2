@@ -1,5 +1,10 @@
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -9,6 +14,7 @@ import it.univaq.ir.data.TweetCollectionPersister;
 import it.univaq.ir.data.TweetCollectionPersisterImpl;
 import it.univaq.ir.model.Tweet;
 import it.univaq.ir.model.TweetCollection;
+import it.univaq.ir.util.IndexComparator;
 import it.univaq.lp.CPLEXCoveringSolver;
 import it.univaq.lp.CoveringSolver;
 
@@ -65,7 +71,23 @@ public class MainCPLEX {
 				Set<String> solution = new HashSet<String>();
 				double val = mvcs.solve(ti.getDictionary(), ti.getTweetTerms(),
 						solution);
-				System.out.println(val + " " + solution);
+				List<String> sortedSolution = new ArrayList<String>(solution); 
+				Collections.sort(sortedSolution, new IndexComparator(ti));
+				Collections.reverse(sortedSolution);
+				System.out.println("Number of element in the cover: "+val);
+				for (String s : sortedSolution) {
+					System.out.println(s+", freq: "+ti.getTermFrequency(s));
+				}
+				//System.out.println(val + " " + solution);
+				
+				//
+				Map most = ti.getMostValuableTweet(tc, ti, solution);
+				Iterator i = most.values().iterator();
+				while(i.hasNext()){
+					Tweet t = (Tweet) i.next();
+					System.out.println(t.getText());
+				}
+				
 			} else {
 				System.out
 						.println("Unknown options or wrong parameters number");
