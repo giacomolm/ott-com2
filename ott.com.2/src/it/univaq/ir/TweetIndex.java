@@ -17,6 +17,6 @@ public interface TweetIndex {
 	public int getTermFrequency(long tweetId, String term);
 	public int getTermFrequency(String term);
 	public int getTermDocumentFrequency(String term);
-	public Map getMostValuableTweet(TweetCollection tc, TweetIndex ti, Set<String> solution);
+	public Map getMostValuableTweet(TweetCollection tc, Set<String> solution);
 	public Collection<Long> getMostValuableTweets(Set<String> solution, int number);
 }

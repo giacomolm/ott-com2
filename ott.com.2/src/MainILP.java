@@ -81,7 +81,7 @@ public class MainILP {
 				}
 				
 				System.out.println("\n---MOST VALUABLE TWEETS (GIACOMO)---");
-				Map most = ti.getMostValuableTweet(tc, ti, solution);
+				Map most = ti.getMostValuableTweet(tc, solution);
 				Iterator i = most.values().iterator();
 				while(i.hasNext()){
 					Tweet t = (Tweet) i.next();
