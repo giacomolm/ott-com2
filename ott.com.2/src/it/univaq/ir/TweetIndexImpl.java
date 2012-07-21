@@ -44,9 +44,20 @@ class MVTComparator implements Comparator<Long> {
 	public int compare(Long o1, Long o2) {
 		int o1i = map.get(o1);
 		int o2i = map.get(o2);
-		return (o1i < o2i) ? -1 : (o1i > o2i) ? 1 : 0;
+		if (o1i < o2i)
+			return -1;
+		else if (o1i > o2i)
+			return 1;
+		else { //o1i == o2i
+			if (o1 < o2)
+				return -1;
+			else if (o1 > o2)
+				return 1;
+			else //o1 == o2
+				return 0;		
+		}
+
 	}
-	
 }
 
 public class TweetIndexImpl implements TweetIndex {
@@ -239,7 +250,16 @@ public class TweetIndexImpl implements TweetIndex {
 		ArrayList<Long> rv = new ArrayList<Long>(smvp.keySet());
 		Collections.reverse(rv);
 		
-		return rv.subList(0, number);
+		Collection<Long> result =  rv.subList(0, number);
+		for (Long l : result) System.err.println("["+l+"]"+smvp.get(l));
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
+		return result;
 	}
 
 	@Override
