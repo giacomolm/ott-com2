@@ -178,7 +178,7 @@ public class TweetIndexImpl implements TweetIndex {
 	}
 
 	@Override
-	public Map getMostValuableTweet(TweetCollection tc, TweetIndex ti, Set<String> solution) {		
+	public Map getMostValuableTweet(TweetCollection tc,  Set<String> solution) {		
 		//max è un array che contiene le frequenze delle 5 parole più frequenti nei tweet
 		int max[] = new int[5];
 		
@@ -199,16 +199,11 @@ public class TweetIndexImpl implements TweetIndex {
 			
 			int temp = 0;
 			//calcolo il costo relativi i termini
-			for(String str : ti.getTweetTerms(t.getId())){
+			for(String str : this.getTweetTerms(t.getId())){
 				if(solution.contains(str)){
-					temp+=ti.getTermDocumentFrequency(str);
+					temp+=this.getTermDocumentFrequency(str);
 				}
 			}
-			
-			//Questo permette di capire se è retwittato: però fa le richieste in tempo reale
-			/*try {
-				if(twitter.showStatus(t.getId()).isRetweet()){*/
-			
 			
 			//Verifichiamo qual'è l'indice con frequenza minore
 			//questa sarà la candidata per lasciare il posto al nuovo tweet con costo maggiore
@@ -223,18 +218,9 @@ public class TweetIndexImpl implements TweetIndex {
 				max[min] = temp;
 				tweets.put(min,t);
 			}
-			
-			
-				/*}
-					
-			} catch (TwitterException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				System.out.println(t.getId()+" nonet");
-			}*/
-			
-			
 		}
+		for(int i=0; i<5; i++)	System.out.print(max[i]+" ");
+
 		return tweets;
 	}
 	
@@ -249,8 +235,10 @@ public class TweetIndexImpl implements TweetIndex {
 			mvp.put(tweet.getKey(), cnt);
 		}
 		smvp.putAll(mvp);
+		//penso che quando richiami la keyset, non ti restituisce l'insieme ordinato, quindi dovrebbe essere questo il problema
 		ArrayList<Long> rv = new ArrayList<Long>(smvp.keySet());
 		Collections.reverse(rv);
+		
 		return rv.subList(0, number);
 	}
 
